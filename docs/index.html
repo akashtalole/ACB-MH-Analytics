@@ -21,6 +21,12 @@
 <main class="wrap">
   <section id="kpis" class="kpis" aria-label="Headline figures"></section>
 
+  <section class="card" id="insights">
+    <h2>Key findings</h2>
+    <ul id="insightList"></ul>
+    <p class="muted small">Computed automatically from the data below; methods are listed under Data notes.</p>
+  </section>
+
   <section class="card">
     <h2>Cases per year</h2>
     <p class="lede">Official ACB case counts since 2014. Traps (सापळा) are the bulk of the work; 2026 is year-to-date.</p>
@@ -55,11 +61,59 @@
   </section>
 
   <section class="card">
+    <h2>Trend and 2026 projection</h2>
+    <p class="lede">Trap cases per year with a least-squares trend line. The 2026 bar is year-to-date; the shaded range projects the full year
+      (low = seasonally adjusted, high = flat pace).</p>
+    <div class="chips" id="trendChips"></div>
+    <div class="chart"><canvas id="trend"></canvas></div>
+    <h3>Year-on-year change in trap cases</h3>
+    <div class="chart short"><canvas id="yoy"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>How concentrated are trap cases?</h2>
+    <p class="lede">A few departments account for most cases. Bars show cases; the line shows the cumulative share.</p>
+    <div class="chips" id="concChips"></div>
+    <div class="chart tall"><canvas id="pareto"></canvas></div>
+    <h3>Case size vs bribe size by department</h3>
+    <p class="lede">Each bubble is a department with 5 or more trap cases. Right = more accused per case; up = larger average bribe; bubble size = number of cases.</p>
+    <div class="chart tall"><canvas id="bubble"></canvas></div>
+    <h3>Department detail</h3>
+    <div class="tablewrap scroll"><table id="deptTable"><thead><tr>
+      <th>Department</th><th>Cases</th><th>Accused / case</th><th>Avg bribe</th><th>Senior (Cl. 1–2) %</th><th>Private persons %</th>
+    </tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Regional profile</h2>
+    <div class="tablewrap"><table id="regionTable"><thead><tr>
+      <th>Region</th><th>Trap cases</th><th>Share of state</th><th>Accused / trap</th><th>Non-trap cases</th>
+    </tr></thead><tbody></tbody></table></div>
+    <h3>Share of published cases by region and year</h3>
+    <p class="lede">Percentage of each year's unique cases (estimated from website postings) that map to a region. Cases with no identifiable region are excluded. <strong>Caution:</strong> region is inferred from place names in titles, so large swings (for example Thane in 2025–26) can reflect how titles are worded rather than real shifts. Treat this as indicative only.</p>
+    <div class="tablewrap"><div id="regionHeat"></div></div>
+  </section>
+
+  <section class="card">
+    <h2>Seasonality and rhythm</h2>
+    <p class="lede">When cases appear on the ACB website (a proxy for when they are registered; unique cases, FIR and press release merged).</p>
+    <div class="tablewrap"><div id="calHeat"></div></div>
+    <div class="grid2">
+      <div><h3>Average cases by month</h3><div class="chart short"><canvas id="monthAvg"></canvas></div></div>
+      <div><h3>Postings by weekday</h3><div class="chart short"><canvas id="weekday"></canvas></div></div>
+    </div>
+    <h3>Monthly cases, trend and unusual months</h3>
+    <p class="lede">Dots mark months more than 2 standard deviations from the previous 12-month average. They flag unusual volume, not a cause.</p>
+    <div class="chart"><canvas id="anom"></canvas></div>
+  </section>
+
+  <section class="card">
     <h2>Published FIRs and press releases</h2>
     <p class="lede">What the ACB website has actually published, by month. This is a count of postings, <strong>not</strong> official case statistics:
       the website carries fewer items than the official yearly totals, and some are duplicates or updates. The latest month is partial.</p>
     <div class="chart"><canvas id="monthly"></canvas></div>
-    <h3>Website postings vs official trap count</h3>
+    <h3>Website postings vs official case count</h3>
+    <p class="lede">Raw postings overcount because one case can have both an FIR and a press release. Unique cases is our de-duplicated estimate; it can exceed 100% of the official count where title variants prevent a merge.</p>
     <div class="chart"><canvas id="coverage"></canvas></div>
   </section>
 
