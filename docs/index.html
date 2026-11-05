@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACB Maharashtra Analytics</title>
+<meta name="description" content="Independent analysis of Anti-Corruption Bureau Maharashtra trap cases, FIRs and press releases.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <h1>ACB Maharashtra Analytics</h1>
+    <p class="sub">Trap cases, disproportionate-assets cases and published FIRs / press releases of the Anti-Corruption Bureau, Maharashtra.
+      <span class="muted">(अँटी करप्शन ब्युरो, महाराष्ट्र राज्य)</span></p>
+    <p class="disclaimer">Independent, unofficial project built from public data on
+      <a href="https://acb.maharashtra.gov.in/press_release">acb.maharashtra.gov.in</a>. A trap or FIR is an allegation, not a conviction.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="kpis" class="kpis" aria-label="Headline figures"></section>
+
+  <section class="card">
+    <h2>Cases per year</h2>
+    <p class="lede">Official ACB case counts since 2014. Traps (सापळा) are the bulk of the work; 2026 is year-to-date.</p>
+    <div class="chart tall"><canvas id="yearly"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>Regions, 2026 year-to-date</h2>
+    <p class="lede">Cases and accused by ACB range (परिक्षेत्र).</p>
+    <div class="chart"><canvas id="regions"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>Trap cases by department, 2026 year-to-date</h2>
+    <div class="controls">
+      <label>Measure
+        <select id="deptMetric">
+          <option value="cases">Trap cases</option>
+          <option value="accused">Accused</option>
+          <option value="amount">Bribe amount (₹)</option>
+          <option value="avg">Average bribe per case (₹)</option>
+        </select>
+      </label>
+      <label>Show top
+        <select id="deptN"><option>10</option><option selected>15</option><option>25</option></select>
+      </label>
+    </div>
+    <div class="chart tall"><canvas id="depts"></canvas></div>
+    <h3>Who is caught: accused by class</h3>
+    <p class="lede">Class 1–4 government servants, other public servants (इलोसे) and private persons (खाजगी), for the same top departments.</p>
+    <div class="chart tall"><canvas id="classes"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>Published FIRs and press releases</h2>
+    <p class="lede">What the ACB website has actually published, by month. This is a count of postings, <strong>not</strong> official case statistics:
+      the website carries fewer items than the official yearly totals, and some are duplicates or updates. The latest month is partial.</p>
+    <div class="chart"><canvas id="monthly"></canvas></div>
+    <h3>Website postings vs official trap count</h3>
+    <div class="chart"><canvas id="coverage"></canvas></div>
+  </section>
+
+  <section class="card" id="explorer">
+    <h2>Explorer</h2>
+    <p class="lede">Every FIR / press release listed on the ACB site. Click a row's link to open the original PDF (scanned image).</p>
+    <div class="controls">
+      <label>Search <input id="q" type="search" placeholder="police station, CR no, district…"></label>
+      <label>Type <select id="fKind"><option value="">All</option><option value="fir">FIR</option><option value="press_release">Press release</option></select></label>
+      <label>Year <select id="fYear"><option value="">All</option></select></label>
+      <label>Region* <select id="fRegion"><option value="">All</option></select></label>
+    </div>
+    <p id="count" class="muted" aria-live="polite"></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Date</th><th>Type</th><th>Title</th><th>CR no.</th><th>Region*</th><th>PDF</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <button id="prev">← Prev</button><span id="page"></span><button id="next">Next →</button>
+    </div>
+    <p class="muted small">*Region is inferred from place names in the title, so it is blank for about 30% of items.</p>
+  </section>
+
+  <section class="card" id="notes">
+    <h2>Data notes</h2>
+    <ul id="notesList"></ul>
+    <ul>
+      <li><strong>Sources:</strong> the official statistics PDF (yearly, region and department tables, transcribed from a Marathi scan and cross-checked against its printed totals) and the public
+        <a href="https://acb.maharashtra.gov.in/fir">FIR</a> and <a href="https://acb.maharashtra.gov.in/press_release">press release</a> index pages.</li>
+      <li><strong>Dates:</strong> a handful of source dates are typos (e.g. year 0021, 2030). Obvious zero-padded years are repaired; others are left undated.</li>
+      <li><strong>Case PDFs</strong> are scanned images. Extracting accused details, designations and trap amounts per case (OCR) is planned for a later phase.</li>
+      <li><strong>Code and data:</strong> <a href="https://github.com/akashtalole/ACB-MH-Analytics">github.com/akashtalole/ACB-MH-Analytics</a>. Refreshed daily by a scheduled workflow.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="wrap muted small" id="foot"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
