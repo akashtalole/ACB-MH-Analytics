@@ -227,9 +227,9 @@
   };
 
   let advDone = false;
-  function chartsAdv() { if (!A) return; if (!advDone) { document.querySelectorAll("#insightList,#trendChips,#concChips").forEach(n => n.replaceChildren()); } advanced(); advDone = true; }
+  function chartsAdv() { if (!A) return; if (!advDone) { document.querySelectorAll("#insightList,#trendChips,#concChips").forEach(n => n.replaceChildren()); } advanced(); officialCharts(); advDone = true; }
   function advanced() {
-    $("insightList").replaceChildren(); $("trendChips").replaceChildren(); $("concChips").replaceChildren();
+    ["insightList", "trendChips", "concChips", "convChips", "sanChips"].forEach(i => $(i).replaceChildren());
     A.insights.forEach(t => $("insightList").append(el("li", { textContent: t })));
     const T = A.trend, P = A.projection, y = stats.yearly, labels = y.map(r => r.year + (r.partial ? "*" : ""));
 
@@ -321,6 +321,140 @@
           const a = M.anomalies.find(x => x.month === M.months[c.dataIndex]);
           return a ? `Unusual: ${a.direction} vs 12-mo baseline ${a.baseline}` : ""; } } } } }),
     });
+  }
+
+  // ---------- official statistics deep-dive ----------
+  function officialCharts() {
+    const O = A.official, grid = css("--grid");
+    const REG = ["--c1", "--c2", "--c3", "--c4", "--c5", "--c6", "--c7", "--c8"];
+    const yrs = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+    const lastYear = stats.yearly[stats.yearly.length - 1].year;
+    const axis = yrs(2014, lastYear);
+    const byYear = (rows, f) => axis.map(y => { const r = rows.find(x => x.year === y); return r ? f(r) : null; });
+    const gap = { spanGaps: false };
+
+    // bribe size
+    make("bribe", {
+      data: { labels: axis, datasets: [
+        { type: "bar", label: "Total bribe amount (₹ lakh)", data: byYear(O.bribe, r => r.amount / 1e5), backgroundColor: css("--c1") + "88", yAxisID: "y" },
+        { type: "line", label: "Average per case (₹)", data: byYear(O.bribe, r => r.avg_per_case), borderColor: css("--c2"), backgroundColor: css("--c2"), yAxisID: "y2", pointRadius: 4, ...gap },
+      ] },
+      options: baseOpts({ scales: { x: { grid: { display: false } },
+        y: { grid: { color: grid }, beginAtZero: true, title: { display: true, text: "Total (₹ lakh)" } },
+        y2: { position: "right", grid: { display: false }, beginAtZero: true, title: { display: true, text: "Average per case (₹)" },
+          ticks: { callback: v => IN.format(v) } } },
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } } } }),
+    });
+    make("accPer", {
+      type: "line",
+      data: { labels: axis, datasets: [{ label: "Accused per trap case", data: byYear(O.bribe, r => r.accused_per_case),
+        borderColor: css("--c4"), backgroundColor: css("--c4"), pointRadius: 4, ...gap }] },
+      options: baseOpts({ plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: grid }, min: 1 } } }),
+    });
+    const names = { c1: "Class 1", c2: "Class 2", c3: "Class 3", c4: "Class 4", other: "Other public servants", private: "Private persons" };
+    const cm = O.class_mix, cc = ["--c1", "--c2", "--c3", "--c4", "--c5", "--c6"];
+    make("classMix", {
+      type: "bar",
+      data: { labels: axis, datasets: cm.classes.map((k, i) => ({ label: names[k], backgroundColor: css(cc[i]),
+        data: axis.map(y => { const j = cm.years.indexOf(y); return j < 0 ? null : cm.pct[i][j]; }) })) },
+      options: baseOpts({ scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, grid: { color: grid }, max: 100, ticks: { callback: v => v + "%" } } } }),
+    });
+
+    // regions over time
+    const RT = O.region_trend;
+    make("regionTrend", {
+      type: "bar",
+      data: { labels: RT.years, datasets: RT.regions.map((r, i) => ({ label: r, data: RT.trap_cases[i], backgroundColor: css(REG[i]) })) },
+      options: baseOpts({ scales: { x: { stacked: true, grid: { display: false }, title: { display: true, text: "* " + lastYear + " is year-to-date" } },
+        y: { stacked: true, grid: { color: grid }, beginAtZero: true } },
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } },
+          tooltip: { callbacks: { footer: it => "All regions: " + IN.format(it.reduce((s, x) => s + x.parsed.y, 0)) } } } }),
+    });
+
+    // department trends
+    const DT = O.dept_trend;
+    make("deptTrend", {
+      type: "line",
+      data: { labels: axis, datasets: DT.depts.map((d, i) => ({ label: d, borderColor: css(REG[i]), backgroundColor: css(REG[i]), pointRadius: 3, tension: .2,
+        data: axis.map(y => { const j = DT.years.indexOf(y); return j < 0 ? null : DT.cases[i][j]; }), ...gap })) },
+      options: baseOpts({ scales: { x: { grid: { display: false } }, y: { grid: { color: grid }, beginAtZero: true, title: { display: true, text: "Trap cases" } } },
+        interaction: { mode: "nearest", intersect: false } }),
+    });
+
+    // convictions
+    const CV = O.convictions, last = CV[CV.length - 1];
+    const cvAxis = yrs(CV[0].year, last.year);
+    const cvBy = f => cvAxis.map(y => { const r = CV.find(x => x.year === y); return r ? f(r) : null; });
+    chip("convChips", `${last.year}${last.partial ? " to date" : ""}:`, `${last.cases} cases, ${last.accused} accused`);
+    chip("convChips", "Fines:", rupees(last.fine));
+    const peak = CV.reduce((m, r) => r.cases > m.cases ? r : m, CV[0]);
+    chip("convChips", `Peak ${peak.year}:`, `${peak.cases} cases`);
+    make("conv", {
+      data: { labels: cvAxis.map(y => y + (CV.find(r => r.year === y)?.partial ? "*" : "")), datasets: [
+        { type: "bar", label: "Convicted cases", data: cvBy(r => r.cases), backgroundColor: css("--c3"), yAxisID: "y" },
+        { type: "line", label: "Convicted cases per 100 traps registered that year", data: cvBy(r => r.per_100_traps), borderColor: css("--c5"), backgroundColor: css("--c5"), yAxisID: "y2", pointRadius: 3 },
+      ] },
+      options: baseOpts({ scales: { x: { grid: { display: false } }, y: { grid: { color: grid }, beginAtZero: true, title: { display: true, text: "Convicted cases" } },
+        y2: { position: "right", grid: { display: false }, beginAtZero: true, title: { display: true, text: "Per 100 traps registered" } } },
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } }, tooltip: { callbacks: { afterBody: it => {
+          const r = CV.find(x => x.year === cvAxis[it[0].dataIndex]); return r ? `${r.accused} accused · fines ${rupees(r.fine)}` : ""; } } } } }),
+    });
+    const ages = CV.filter(r => r.age);
+    $("ageN").textContent = `${IN.format(ages.reduce((s, r) => s + r.age.n, 0))} cases across ${ages.length} years`;
+    make("age", {
+      type: "line",
+      data: { labels: ages.map(r => r.year), datasets: [
+        { label: "Median age (years)", data: ages.map(r => r.age.median), borderColor: css("--c1"), backgroundColor: css("--c1"), pointRadius: 4 },
+        { label: "75th percentile", data: ages.map(r => r.age.p75), borderColor: css("--c2"), backgroundColor: css("--c2"), borderDash: [5, 4], pointRadius: 3 },
+      ] },
+      options: baseOpts({ scales: { x: { grid: { display: false } }, y: { grid: { color: grid }, beginAtZero: true, title: { display: true, text: "Years since registration" } } },
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } }, tooltip: { callbacks: { afterBody: it => {
+          const r = ages[it[0].dataIndex]; return `n = ${r.age.n} · ${r.age.share_10plus_pct}% were 10+ years old`; } } } } }),
+    });
+
+    // pipeline
+    const P = O.pipeline;
+    const other = r => Math.max(0, r.registered - r.chargesheet_filed - r.sanction_received - r.sanction_pending - r.investigation_pending);
+    const pct = (r, v) => Math.round(1000 * v / r.registered) / 10;
+    make("pipeline", {
+      type: "bar",
+      data: { labels: P.map(r => r.year + (r.partial ? "*" : "")), datasets: [
+        { label: "Chargesheet filed", data: P.map(r => pct(r, r.chargesheet_filed)), backgroundColor: css("--c3") },
+        { label: "Sanction received", data: P.map(r => pct(r, r.sanction_received)), backgroundColor: css("--c1") },
+        { label: "Awaiting sanction", data: P.map(r => pct(r, r.sanction_pending)), backgroundColor: css("--c2") },
+        { label: "Under investigation", data: P.map(r => pct(r, r.investigation_pending)), backgroundColor: css("--c5") },
+        { label: "Other / closed", data: P.map(r => pct(r, other(r))), backgroundColor: css("--c6") },
+      ] },
+      options: baseOpts({ scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, grid: { color: grid }, max: 100, ticks: { callback: v => v + "%" } } },
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } }, tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y}%` } } } }),
+    });
+    const PR = O.pipeline_regions;
+    $("pipeYear").textContent = P[P.length - 1].year;
+    make("pipeRegion", {
+      type: "bar",
+      data: { labels: PR.map(r => r.region), datasets: [{ label: "% still under investigation", data: PR.map(r => r.pending_inv_pct), backgroundColor: css("--c5") }] },
+      options: baseOpts({ indexAxis: "y", plugins: { legend: { display: false }, tooltip: { callbacks: {
+        label: c => `${c.parsed.x}% (${PR[c.dataIndex].investigation_pending} of ${PR[c.dataIndex].total})` } } },
+        scales: { x: { grid: { color: grid }, beginAtZero: true, max: 100, ticks: { callback: v => v + "%" } }, y: { grid: { display: false } } } }),
+    });
+
+    // sanctions
+    const S = O.sanction;
+    if (S) {
+      chip("sanChips", "Cases awaiting sanction:", IN.format(S.totals.total));
+      chip("sanChips", "Waiting over 90 days:", `${IN.format(S.totals.over_90)} (${S.over_90_pct}%)`);
+      chip("sanChips", "With competent authority / Government:", `${S.totals.with_competent} / ${S.totals.with_govt}`);
+      make("sanDept", {
+        type: "bar",
+        data: { labels: S.rows.map(r => r.dept), datasets: [
+          { label: "Up to 90 days", data: S.rows.map(r => r.under_90), backgroundColor: css("--c3") },
+          { label: "Over 90 days", data: S.rows.map(r => r.over_90), backgroundColor: css("--c5") },
+        ] },
+        options: baseOpts({ indexAxis: "y", scales: { x: { stacked: true, grid: { color: grid }, beginAtZero: true }, y: { stacked: true, grid: { display: false } } },
+          plugins: { legend: { position: "bottom", labels: { boxWidth: 12 } }, tooltip: { callbacks: { afterBody: it => {
+            const r = S.rows[it[0].dataIndex]; return `Total ${r.total} · competent authority ${r.with_competent} · Government ${r.with_govt}`; } } } } }),
+      });
+    }
   }
 
   function notes() {
