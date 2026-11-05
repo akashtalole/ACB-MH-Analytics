@@ -10,6 +10,7 @@ Served as a static site from `docs/` via GitHub Pages. A trap or FIR is an alleg
 | Data | Source | Script | Output |
 |---|---|---|---|
 | ~8,600 FIR / press-release index rows (title, date, PDF link, parsed CR no., section, inferred region) | the two website tables | `scripts/scrape_index.py` | `docs/data/records.json` |
+| Derived analytics: trend and 2026 projection, department concentration, regional profile, seasonality, anomalies, de-duplicated unique-case estimate | the two datasets above | `scripts/build_analytics.py` | `docs/data/analytics.json` |
 | Yearly 2014–2026, region and department tables (traps, assets, other) | the official statistics PDF (Marathi scan, hand-transcribed) | `scripts/build_stats.py` | `docs/data/stats.json` |
 
 `build_stats.py` cross-checks every table against the PDF's printed totals. Known source inconsistencies
@@ -24,6 +25,7 @@ designation, department, bribe amount and outcome per case.
 ```bash
 python scripts/scrape_index.py      # needs network; stdlib only
 python scripts/build_stats.py
+python scripts/build_analytics.py
 python -m unittest discover -s tests
 python -m http.server -d docs 8000  # open http://localhost:8000
 ```

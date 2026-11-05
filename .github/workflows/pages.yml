@@ -33,6 +33,8 @@ jobs:
         run: python scripts/scrape_index.py
       - name: Verify stats tables
         run: python scripts/build_stats.py
+      - name: Compute analytics
+        run: python scripts/build_analytics.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
