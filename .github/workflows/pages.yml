@@ -27,12 +27,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install dependencies
+        run: pip install pdfplumber==0.11.10
       - name: Run parser tests
         run: python -m unittest discover -s tests -v
       - name: Refresh FIR / press-release index from acb.maharashtra.gov.in
         run: python scripts/scrape_index.py
-      - name: Verify stats tables
-        run: python scripts/build_stats.py
+      - name: Refresh official statistics (current and previous year; older years come from the committed history.json)
+        run: python scripts/parse_statistics.py --years $(date +%Y) $(( $(date +%Y) - 1 ))
       - name: Compute analytics
         run: python scripts/build_analytics.py
       - uses: actions/configure-pages@v5

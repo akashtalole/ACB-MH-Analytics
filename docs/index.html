@@ -29,7 +29,7 @@
 
   <section class="card">
     <h2>Cases per year</h2>
-    <p class="lede">Official ACB case counts since 2014. Traps (सापळा) are the bulk of the work; 2026 is year-to-date.</p>
+    <p class="lede">Official ACB case counts since 2009, from the <a href="https://acb.maharashtra.gov.in/statistics">statistics page</a>. Registrations jumped in 2014 (583 to 1,245 trap cases) and have trended down since; 2026 is year-to-date.</p>
     <div class="chart tall"><canvas id="yearly"></canvas></div>
   </section>
 
@@ -108,6 +108,53 @@
   </section>
 
   <section class="card">
+    <h2>Bribe size and who is accused</h2>
+    <p class="lede">Average bribe per trap case and the make-up of accused, from the official department tables. Only years with a complete department table are shown (2022 and 2024 are not published in this form, and the 2025 file is a mid-year snapshot).</p>
+    <div class="chart"><canvas id="bribe"></canvas></div>
+    <div class="grid2">
+      <div><h3>Accused per case</h3><div class="chart short"><canvas id="accPer"></canvas></div></div>
+      <div><h3>Class of accused (% of accused)</h3><div class="chart short"><canvas id="classMix"></canvas></div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Regions over time</h2>
+    <p class="lede">Trap cases registered by ACB range, 2014 to date (all years are available from the statistics files).</p>
+    <div class="chart tall"><canvas id="regionTrend"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>Department trends</h2>
+    <p class="lede">Trap cases per year for the eight departments with the most cases over the years shown. Gaps are years without a complete department table. Earlier files list fewer departments, so older names are mapped to today's categories and are not always identical.</p>
+    <div class="chart tall"><canvas id="deptTrend"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>Convictions</h2>
+    <p class="lede">Cases in which accused were convicted, as listed in the ACB's yearly conviction files. Bars are convicted cases; the line is convicted cases per 100 trap cases <em>registered in the same year</em>. That is a rough scale comparison and <strong>not</strong> a conviction rate, because convictions come from cases registered years earlier and acquittals are not published here.</p>
+    <div class="chips" id="convChips"></div>
+    <div class="chart"><canvas id="conv"></canvas></div>
+    <h3>How old is a case when the conviction comes?</h3>
+    <p class="lede">Years between the registration year in the case number and the year of the conviction file. Based on the convicted cases whose number could be read from the PDF (<span id="ageN"></span>), so a sample, not every case.</p>
+    <div class="chart short"><canvas id="age"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>What happened to the cases? Status by registration year</h2>
+    <p class="lede">Status of trap, assets and other cases as shown in the ACB's case-status tables. These are snapshots taken when each file was last updated, so recent years naturally show more cases still under investigation.</p>
+    <div class="chart"><canvas id="pipeline"></canvas></div>
+    <h3>Still under investigation, by region (<span id="pipeYear"></span> cases)</h3>
+    <div class="chart short"><canvas id="pipeRegion"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>Prosecution sanctions pending</h2>
+    <p class="lede">Before a public servant can be prosecuted, the competent authority or Government must sanction it. These are the cases waiting for that sanction, from the ACB's Annexure-2.</p>
+    <div class="chips" id="sanChips"></div>
+    <div class="chart tall"><canvas id="sanDept"></canvas></div>
+  </section>
+
+  <section class="card">
     <h2>Published FIRs and press releases</h2>
     <p class="lede">What the ACB website has actually published, by month. This is a count of postings, <strong>not</strong> official case statistics:
       the website carries fewer items than the official yearly totals, and some are duplicates or updates. The latest month is partial.</p>
@@ -143,10 +190,11 @@
     <h2>Data notes</h2>
     <ul id="notesList"></ul>
     <ul>
-      <li><strong>Sources:</strong> the official statistics PDF (yearly, region and department tables, transcribed from a Marathi scan and cross-checked against its printed totals) and the public
+      <li><strong>Sources:</strong> the official PDFs on the ACB <a href="https://acb.maharashtra.gov.in/statistics">statistics page</a> (yearly, region and department tables, convictions, case status, pending sanctions), read from each file's text layer and checked against the totals printed in the PDF, plus the public
         <a href="https://acb.maharashtra.gov.in/fir">FIR</a> and <a href="https://acb.maharashtra.gov.in/press_release">press release</a> index pages.</li>
       <li><strong>Dates:</strong> a handful of source dates are typos (e.g. year 0021, 2030). Obvious zero-padded years are repaired; others are left undated.</li>
-      <li><strong>Case PDFs</strong> are scanned images. Extracting accused details, designations and trap amounts per case (OCR) is planned for a later phase.</li>
+      <li><strong>Privacy:</strong> the conviction PDFs name individual public servants. This site uses only aggregate counts and never stores or shows names.</li>
+      <li><strong>Case PDFs</strong> on the FIR and press-release pages are scanned images. Extracting accused details, designations and trap amounts per case (OCR) is planned for a later phase.</li>
       <li><strong>Code and data:</strong> <a href="https://github.com/akashtalole/ACB-MH-Analytics">github.com/akashtalole/ACB-MH-Analytics</a>. Refreshed daily by a scheduled workflow.</li>
     </ul>
   </section>

@@ -49,7 +49,8 @@ def unique_cases(records: list[dict]) -> list[dict]:
 
 
 def trend(stats: dict) -> dict:
-    full = [y for y in stats["yearly"] if not y["partial"]]
+    # from 2014: registrations roughly doubled that year (583 -> 1,245), so earlier years would distort the fit
+    full = [y for y in stats["yearly"] if not y["partial"] and y["year"] >= 2014]
     xs, ys = [y["year"] for y in full], [y["trap"] for y in full]
     slope, intercept = st.linear_regression(xs, ys)
     r = st.correlation(xs, ys)
@@ -216,7 +217,7 @@ def region_year(uniq: list[dict]) -> dict:
 def insights(a: dict, stats: dict) -> list[str]:
     t, p, c, w = a["trend"], a["projection"], a["concentration"], a["weekdays"]
     out = [
-        f"Trap cases fell from {stats['yearly'][0]['trap']:,} in {t['from_year']} to {stats['yearly'][-2]['trap']:,} in {t['to_year']} "
+        f"Trap cases fell from {next(y['trap'] for y in stats['yearly'] if y['year'] == t['from_year']):,} in {t['from_year']} to {next(y['trap'] for y in stats['yearly'] if y['year'] == t['to_year']):,} in {t['to_year']} "
         f"({t['cagr_pct']:+.1f}% a year compounded); the linear trend loses about {abs(t['slope_per_year']):.0f} cases a year (R² = {t['r2']}).",
         f"{c['top3_pct']}% of 2026 trap cases come from just three departments, and {c['n_for_80pct']} of {c['n_depts']} active departments "
         f"account for 80% (concentration index HHI = {c['hhi']:,}).",
@@ -227,12 +228,255 @@ def insights(a: dict, stats: dict) -> list[str]:
                    f"(seasonally adjusted {p['seasonal_low']:,}–{p['seasonal_high']:,}) versus {p['prev_year']:,} in 2025.")
     hi = max((d for d in a["concentration"]["depts"] if d["cases"] >= 5), key=lambda d: d["accused_per_case"])
     out.append(f"Among departments with 5+ trap cases, {hi['dept']} has the most accused per case ({hi['accused_per_case']}), i.e. the most multi-accused cases.")
+
+    o = a["official"]
+    conv = [c for c in o["convictions"] if not c["partial"]]
+    if conv:
+        peak = max(conv, key=lambda c: c["cases"])
+        last = conv[-1]
+        out.append(f"Convicted cases peaked at {peak['cases']} in {peak['year']} and were {last['cases']} in {last['year']} "
+                   f"({last['per_100_traps']} per 100 traps registered that year).")
+        aged = [c for c in conv if c["age"]]
+        early = [c["age"]["median"] for c in aged if c["year"] <= 2019]
+        late = [c["age"]["median"] for c in aged if c["year"] >= 2023]
+        if early and late:
+            out.append(f"The typical convicted case is getting older: median {st.median(early):g} years from registration to "
+                       f"conviction up to 2019, {st.median(late):g} years from 2023 on.")
+    san = o.get("sanction")
+    if san:
+        out.append(f"{san['totals']['total']} cases are awaiting prosecution sanction; {san['over_90_pct']}% have waited more than 90 days, "
+                   f"and {san['competent_pct']}% sit with the competent authority rather than the Government.")
+    b = o["bribe"]
+    if len(b) >= 2:
+        out.append(f"Average bribe per trap case rose from \u20b9{b[0]['avg_per_case']:,} ({b[0]['year']}) to \u20b9{b[-1]['avg_per_case']:,} "
+                   f"({b[-1]['year']}), in the years with complete department tables.")
     return out
+
+
+# --------------------------------------------------------------------------- official statistics
+# Everything below is derived from docs/data/history.json (written by parse_statistics.py from the
+# PDFs on https://acb.maharashtra.gov.in/statistics).
+
+CLASS_KEYS = ["c1", "c2", "c3", "c4", "other", "private"]
+
+
+def load_history() -> dict:
+    return json.loads((DATA / "history.json").read_text(encoding="utf-8"))
+
+
+def merged_summary(hist: dict) -> dict[int, dict]:
+    """year -> {trap, da, other, total}.
+
+    Every yearly PDF repeats earlier years, and the files sometimes disagree (typos). The newest file
+    wins, unless its trap + assets + other does not add up to the printed total; in that case the
+    combination of values seen in any file that does add up is used. Every disagreement is recorded
+    in hist["_conflicts"] so it can be shown as a data-quality note.
+    """
+    cands: dict[int, dict[str, dict[int, int]]] = defaultdict(lambda: defaultdict(dict))
+    for fy in sorted(hist["yearly"], key=int):
+        rec = hist["yearly"][fy]
+        sm = dict(rec.get("summary", {}))
+        # the file's own year is the last, unlabelled column of the summary table; take it from the
+        # printed department/region totals instead (trap cases, assets cases, other cases)
+        if fy not in sm and rec.get("trap_totals") and rec.get("da_totals") and rec.get("other_totals"):
+            t, d, o = rec["trap_totals"]["cases"], rec["da_totals"]["cases"], rec["other_totals"]["cases"]
+            sm[fy] = {"trap": t, "da": d, "other": o, "total": t + d + o}
+        for y, vals in sm.items():
+            for k, v in vals.items():
+                cands[int(y)][k][int(fy)] = v
+    out: dict[int, dict] = {}
+    conflicts = []
+    for y, fields in cands.items():
+        newest = {k: m[max(m)] for k, m in fields.items()}
+        chosen = dict(newest)
+        parts = ("trap", "da", "other")
+        if all(k in newest for k in (*parts, "total")) and sum(newest[k] for k in parts) != newest["total"]:
+            from itertools import product
+            options = [sorted(set(fields[k].values())) for k in parts]
+            for combo in product(*options):
+                if sum(combo) == newest["total"]:
+                    chosen.update(dict(zip(parts, combo)))
+                    break
+        for k, m in fields.items():
+            if len(set(m.values())) > 1 and chosen[k] != newest[k] or (len(set(m.values())) > 1 and y >= 2009 and k == "trap"):
+                conflicts.append((y, k, newest[k], chosen[k], max(m)))
+        out[y] = chosen
+    hist["_conflicts"] = conflicts
+    return out
+
+
+def build_stats(hist: dict) -> dict:
+    """The latest-year snapshot, in the shape the dashboard already consumes (stats.json)."""
+    summ = merged_summary(hist)
+    latest = max(int(y) for y in hist["yearly"] if hist["yearly"][y].get("trap_by_dept"))
+    cur = hist["yearly"][str(latest)]
+    years = sorted(y for y in summ if y >= 2009)
+    yearly = []
+    for y in years:
+        v = summ[y]
+        total = v.get("total") or sum(v.get(k, 0) for k in ("trap", "da", "other"))
+        yearly.append({"year": y, "trap": v.get("trap"), "da": v.get("da", 0), "other": v.get("other", 0),
+                       "total": total, "partial": y == latest})
+    regs = [dict(region=r, **cur["regions"][r]) for r in
+            ["Mumbai", "Thane", "Pune", "Nashik", "Nagpur", "Amravati", "Chh. Sambhajinagar", "Nanded"] if r in cur["regions"]]
+    tot = lambda k: sum(r[k] for r in regs)
+    mr = {k: tot(k) for k in ("trap_cases", "trap_accused", "da_cases", "da_accused", "other_cases", "other_accused")}
+    notes = []
+    for w in hist["warnings"]:
+        y = w.split()[0]
+        if "conviction" in w:
+            m = re.findall(r"'cases': (\d+)", w)
+            if len(m) >= 2:
+                notes.append(f"{y} convictions: the department rows add up to {m[0]} cases but the PDF prints {m[1]}; "
+                             f"yearly conviction counts use the printed total and the department split is not shown for that year.")
+                continue
+        if " da: " in w:
+            notes.append(f"{y} disproportionate-assets table: department rows add up to 10 cases / 17 accused but the PDF's own total row says 11 / 19; both kept as printed.")
+            continue
+        notes.append(w)
+    for y, k, old, new, _ in hist.get("_conflicts", []):
+        if old != new:
+            notes.append(f"{y} {k}: ACB's yearly files disagree ({old} vs {new}); the value consistent with the printed total ({new}) is used.")
+    doc = next((d for d in hist["documents"] if d["year"] == latest and d["kind"] == "yearly"), {})
+    return {
+        "source": "ACB Maharashtra statistics page (official PDFs), parsed from their text layer",
+        "source_url": doc.get("url"), "as_of": hist["generated_at"][:10], "period": {"from": f"{latest}-01-01"},
+        "yearly": yearly, "regions": regs, "region_totals": mr,
+        "trap_by_dept": [{"dept": r["dept"], **{k: r[k] for k in ("cases", *CLASS_KEYS, "accused", "amount")}}
+                         for r in cur["trap_by_dept"]],
+        "trap_totals": cur.get("trap_totals"),
+        "da_by_dept": cur.get("da_by_dept", []), "da_totals": cur.get("da_totals"),
+        "other_by_dept": cur.get("other_by_dept", []), "other_totals": cur.get("other_totals"),
+        "notes": notes,
+    }
+
+
+def complete_years(hist: dict, summ: dict) -> dict[int, dict]:
+    """Yearly files whose trap total equals the final yearly figure, i.e. a full-year dataset
+    (the in-progress year and snapshots taken mid-year are excluded from trends)."""
+    out = {}
+    for ys, rec in hist["yearly"].items():
+        y = int(ys)
+        t = rec.get("trap_totals")
+        if t and summ.get(y, {}).get("trap") == t["cases"] and y < date.today().year:
+            out[y] = rec
+    return out
+
+
+def official(hist: dict, summ: dict) -> dict:
+    full = complete_years(hist, summ)
+    years = sorted(full)
+    # ---- long-run
+    longrun = [{"year": y, "trap": summ[y].get("trap"), "total": summ[y].get("total")} for y in sorted(summ) if y >= 2009]
+
+    # ---- bribe amounts and accused per case (trap cases)
+    bribe = []
+    for y in years:
+        t = full[y]["trap_totals"]
+        bribe.append({"year": y, "cases": t["cases"], "accused": t["accused"], "amount": t["amount"],
+                      "avg_per_case": round(t["amount"] / t["cases"]), "accused_per_case": round(t["accused"] / t["cases"], 2),
+                      "private_pct": round(100 * t["private"] / t["accused"], 1),
+                      "senior_pct": round(100 * (t["c1"] + t["c2"]) / t["accused"], 1)})
+
+    # ---- region trend (trap cases). Prefer a yearly file's region table; for years without one
+    #      (2022, 2024, 2025) fall back to the case-status snapshot, which has the same regional counts.
+    cur_year = date.today().year
+    regs = ["Mumbai", "Thane", "Pune", "Nashik", "Nagpur", "Amravati", "Chh. Sambhajinagar", "Nanded"]
+    by_year: dict[int, dict[str, int]] = {}
+    for ys, rec in hist["yearly"].items():
+        y = int(ys)
+        r = rec.get("regions") or {}
+        if r and "trap_cases" in next(iter(r.values())) and (y == cur_year or sum(v["trap_cases"] for v in r.values()) == summ.get(y, {}).get("trap")):
+            by_year[y] = {k: v["trap_cases"] for k, v in r.items()}
+    for ys, rec in hist["pipeline"].items():
+        y = int(ys)
+        r = rec.get("regions") or {}
+        if y not in by_year and r and (y == cur_year or sum(v["trap"] for v in r.values()) == summ.get(y, {}).get("trap")):
+            by_year[y] = {k: v["trap"] for k, v in r.items()}
+    ry_years = sorted(by_year)
+    region_trend = {"years": ry_years, "regions": regs,
+                    "trap_cases": [[by_year[y].get(r, 0) for y in ry_years] for r in regs]}
+
+    # ---- department trend (complete years only)
+    tot_by_dept: Counter = Counter()
+    for y in years:
+        for d in full[y]["trap_by_dept"]:
+            tot_by_dept[d["dept"]] += d["cases"]
+    top = [d for d, _ in tot_by_dept.most_common(8)]
+    dept_trend = {"years": years, "depts": top,
+                  "cases": [[next((d["cases"] for d in full[y]["trap_by_dept"] if d["dept"] == name), 0) for y in years] for name in top],
+                  "avg_bribe": [[(lambda r: round(r["amount"] / r["cases"]) if r and r["cases"] else None)(
+                      next((d for d in full[y]["trap_by_dept"] if d["dept"] == name), None)) for y in years] for name in top]}
+
+    # ---- class mix of accused in trap cases
+    class_mix = {"years": years, "classes": CLASS_KEYS,
+                 "pct": [[round(100 * full[y]["trap_totals"][k] / full[y]["trap_totals"]["accused"], 1) for y in years] for k in CLASS_KEYS]}
+
+    # ---- convictions
+    conv = []
+    for ys in sorted(hist["conviction"], key=int):
+        c = hist["conviction"][ys]
+        t = c.get("totals")
+        if not t:
+            continue
+        y = int(ys)
+        age = c.get("age_at_conviction")
+        traps = summ.get(y, {}).get("trap")
+        conv.append({"year": y, "cases": t["cases"], "accused": t["accused"], "fine": t["fine"],
+                     "fine_per_accused": round(t["fine"] / t["accused"]) if t["accused"] else None,
+                     "partial": y == date.today().year,
+                     "per_100_traps": round(100 * t["cases"] / traps, 1) if traps else None,
+                     "by_dept_complete": sum(d["cases"] for d in c["by_dept"]) == t["cases"],
+                     "senior_pct": round(100 * (t["c1"] + t["c2"]) / t["accused"], 1) if t["accused"] else None,
+                     "age": age})
+    latest_conv = next((c for c in reversed(conv) if c["by_dept_complete"] and not c["partial"]), None)
+    conv_dept = None
+    if latest_conv:
+        rows = hist["conviction"][str(latest_conv["year"])]["by_dept"]
+        conv_dept = {"year": latest_conv["year"], "rows": sorted(rows, key=lambda r: -r["cases"])}
+
+    # ---- pipeline: status of cases by registration year (snapshot as of last ACB update)
+    pipe = []
+    for ys in sorted(hist["pipeline"], key=int):
+        p = hist["pipeline"][ys]
+        t = p.get("totals")
+        if not t or not p.get("regions"):
+            continue
+        n = t["total"]
+        sp = t["sanction_pending_govt"] + t["sanction_pending_competent"]
+        pipe.append({"year": int(ys), "registered": n, "investigation_pending": t["investigation_pending"],
+                     "sanction_pending": sp, "sanction_received": t["sanction_received"],
+                     "chargesheet_filed": t["chargesheet_filed"],
+                     "pending_inv_pct": round(100 * t["investigation_pending"] / n, 1),
+                     "chargesheet_pct": round(100 * t["chargesheet_filed"] / n, 1),
+                     "partial": int(ys) == date.today().year})
+    pipe_regions = None
+    if pipe:
+        pr = hist["pipeline"][str(pipe[-1]["year"])]["regions"]
+        pipe_regions = [{"region": r, **v, "pending_inv_pct": round(100 * v["investigation_pending"] / v["total"], 1) if v["total"] else 0}
+                        for r, v in sorted(pr.items(), key=lambda kv: -kv[1]["investigation_pending"] / max(kv[1]["total"], 1))]
+
+    # ---- sanction backlog
+    san = None
+    sp = hist["sanction_pending"].get(str(date.today().year)) or (hist["sanction_pending"] or {}).get(max(hist["sanction_pending"], default="0"))
+    if sp and sp.get("totals") and sp.get("rows"):
+        t = sp["totals"]
+        san = {"year": sp["year"], "totals": t, "over_90_pct": round(100 * t["over_90"] / t["total"], 1),
+               "competent_pct": round(100 * t["with_competent"] / t["total"], 1),
+               "rows": sorted([r for r in sp["rows"] if r["total"]], key=lambda r: -r["total"])}
+
+    return {"longrun": longrun, "bribe": bribe, "region_trend": region_trend, "dept_trend": dept_trend,
+            "class_mix": class_mix, "convictions": conv, "conviction_dept": conv_dept, "pipeline": pipe,
+            "pipeline_regions": pipe_regions, "sanction": san,
+            "conflicts": [{"year": y, "field": k, "old": o, "new": n, "file_year": f} for y, k, o, n, f in hist.get("_conflicts", [])],
+            "complete_years": years}
 
 
 def main() -> None:
     recs = json.loads((DATA / "records.json").read_text(encoding="utf-8"))["records"]
-    stats = json.loads((DATA / "stats.json").read_text(encoding="utf-8"))
+    hist = load_history()
+    stats = build_stats(hist)
+    (DATA / "stats.json").write_text(json.dumps(stats, ensure_ascii=False, indent=1), encoding="utf-8")
     uniq = unique_cases(recs)
     today = date.today()
     a = {
@@ -250,6 +494,7 @@ def main() -> None:
         "monthly": monthly_series(uniq, today),
         "coverage": dedupe_vs_official(recs, uniq, stats),
         "region_year": region_year(uniq),
+        "official": official(hist, merged_summary(hist)),
     }
     a["insights"] = insights(a, stats)
     (DATA / "analytics.json").write_text(json.dumps(a, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

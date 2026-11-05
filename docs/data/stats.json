@@ -1,11 +1,51 @@
 {
- "source": "ACB Maharashtra — statistics PDF supplied by the maintainer (period 01-01-2026 to 02-11-2026)",
+ "source": "ACB Maharashtra statistics page (official PDFs), parsed from their text layer",
+ "source_url": "https://acb.maharashtra.gov.in/storage/statistic/78CiUb21lIn2hMrfvKDqKSDnFzPudEL4YIGpoXym.pdf",
+ "as_of": "2026-11-05",
  "period": {
-  "from": "2026-01-01",
-  "to": "2026-11-02"
+  "from": "2026-01-01"
  },
- "as_of": "2026-11-02",
  "yearly": [
+  {
+   "year": 2009,
+   "trap": 405,
+   "da": 5,
+   "other": 0,
+   "total": 410,
+   "partial": false
+  },
+  {
+   "year": 2010,
+   "trap": 486,
+   "da": 18,
+   "other": 24,
+   "total": 528,
+   "partial": false
+  },
+  {
+   "year": 2011,
+   "trap": 479,
+   "da": 15,
+   "other": 18,
+   "total": 512,
+   "partial": false
+  },
+  {
+   "year": 2012,
+   "trap": 489,
+   "da": 22,
+   "other": 13,
+   "total": 524,
+   "partial": false
+  },
+  {
+   "year": 2013,
+   "trap": 583,
+   "da": 16,
+   "other": 5,
+   "total": 604,
+   "partial": false
+  },
   {
    "year": 2014,
    "trap": 1245,
@@ -119,7 +159,9 @@
    "da_cases": 1,
    "da_accused": 1,
    "other_cases": 1,
-   "other_accused": 9
+   "other_accused": 9,
+   "total_cases": 34,
+   "total_accused": 59
   },
   {
    "region": "Thane",
@@ -128,7 +170,9 @@
    "da_cases": 1,
    "da_accused": 2,
    "other_cases": 0,
-   "other_accused": 0
+   "other_accused": 0,
+   "total_cases": 82,
+   "total_accused": 114
   },
   {
    "region": "Pune",
@@ -137,7 +181,9 @@
    "da_cases": 4,
    "da_accused": 7,
    "other_cases": 0,
-   "other_accused": 0
+   "other_accused": 0,
+   "total_cases": 110,
+   "total_accused": 156
   },
   {
    "region": "Nashik",
@@ -146,7 +192,9 @@
    "da_cases": 1,
    "da_accused": 2,
    "other_cases": 1,
-   "other_accused": 1
+   "other_accused": 1,
+   "total_cases": 128,
+   "total_accused": 206
   },
   {
    "region": "Nagpur",
@@ -155,7 +203,9 @@
    "da_cases": 2,
    "da_accused": 3,
    "other_cases": 7,
-   "other_accused": 43
+   "other_accused": 43,
+   "total_cases": 66,
+   "total_accused": 128
   },
   {
    "region": "Amravati",
@@ -164,7 +214,9 @@
    "da_cases": 0,
    "da_accused": 0,
    "other_cases": 3,
-   "other_accused": 15
+   "other_accused": 15,
+   "total_cases": 65,
+   "total_accused": 102
   },
   {
    "region": "Chh. Sambhajinagar",
@@ -173,7 +225,9 @@
    "da_cases": 0,
    "da_accused": 0,
    "other_cases": 0,
-   "other_accused": 0
+   "other_accused": 0,
+   "total_cases": 97,
+   "total_accused": 128
   },
   {
    "region": "Nanded",
@@ -182,7 +236,9 @@
    "da_cases": 2,
    "da_accused": 4,
    "other_cases": 0,
-   "other_accused": 0
+   "other_accused": 0,
+   "total_cases": 50,
+   "total_accused": 65
   }
  ],
  "region_totals": {
@@ -196,7 +252,6 @@
  "trap_by_dept": [
   {
    "dept": "Revenue / Land Records / Registration",
-   "dept_mr": "महसूल/भूमी अभिलेख/नोंदणी",
    "cases": 148,
    "c1": 8,
    "c2": 10,
@@ -209,7 +264,6 @@
   },
   {
    "dept": "Police",
-   "dept_mr": "पोलीस",
    "cases": 98,
    "c1": 5,
    "c2": 25,
@@ -222,7 +276,6 @@
   },
   {
    "dept": "MSEDCL (power distribution)",
-   "dept_mr": "म.रा.वि.वि.कं.मर्यादित",
    "cases": 42,
    "c1": 4,
    "c2": 10,
@@ -231,11 +284,10 @@
    "other": 5,
    "private": 6,
    "accused": 49,
-   "amount": 1475900
+   "amount": 1475500
   },
   {
    "dept": "Municipal Corporation",
-   "dept_mr": "महानगर पालिका",
    "cases": 32,
    "c1": 4,
    "c2": 10,
@@ -248,7 +300,6 @@
   },
   {
    "dept": "Nagar Palika",
-   "dept_mr": "नगर पालिका",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -261,7 +312,6 @@
   },
   {
    "dept": "Nagar Parishad",
-   "dept_mr": "नगर परिषद",
    "cases": 10,
    "c1": 1,
    "c2": 1,
@@ -274,7 +324,6 @@
   },
   {
    "dept": "Zilla Parishad",
-   "dept_mr": "जिल्हा परिषद",
    "cases": 19,
    "c1": 5,
    "c2": 1,
@@ -287,7 +336,6 @@
   },
   {
    "dept": "Panchayat Samiti",
-   "dept_mr": "पंचायत समिती",
    "cases": 63,
    "c1": 0,
    "c2": 1,
@@ -300,7 +348,6 @@
   },
   {
    "dept": "Forest",
-   "dept_mr": "वन विभाग",
    "cases": 25,
    "c1": 2,
    "c2": 4,
@@ -309,11 +356,10 @@
    "other": 1,
    "private": 6,
    "accused": 46,
-   "amount": 5386900
+   "amount": 5386500
   },
   {
    "dept": "Animal Husbandry, Dairy & Fisheries",
-   "dept_mr": "प.दु.म. विभाग",
    "cases": 3,
    "c1": 2,
    "c2": 1,
@@ -326,7 +372,6 @@
   },
   {
    "dept": "Food & Civil Supplies",
-   "dept_mr": "अन्न व नागरी पुरवठा",
    "cases": 4,
    "c1": 0,
    "c2": 0,
@@ -339,7 +384,6 @@
   },
   {
    "dept": "Water Resources",
-   "dept_mr": "जलसंपदा विभाग",
    "cases": 9,
    "c1": 4,
    "c2": 0,
@@ -352,7 +396,6 @@
   },
   {
    "dept": "Public Health",
-   "dept_mr": "सार्वजनिक आरोग्य विभाग",
    "cases": 23,
    "c1": 4,
    "c2": 4,
@@ -365,7 +408,6 @@
   },
   {
    "dept": "State Excise",
-   "dept_mr": "राज्य उत्पादन शुल्क",
    "cases": 2,
    "c1": 0,
    "c2": 1,
@@ -378,7 +420,6 @@
   },
   {
    "dept": "Tribal Development",
-   "dept_mr": "आदिवासी विकास",
    "cases": 1,
    "c1": 0,
    "c2": 0,
@@ -387,11 +428,10 @@
    "other": 0,
    "private": 0,
    "accused": 1,
-   "amount": 23350
+   "amount": 2350
   },
   {
    "dept": "Regional Transport (RTO)",
-   "dept_mr": "प्रादेशिक परिवहन विभाग",
    "cases": 13,
    "c1": 2,
    "c2": 1,
@@ -404,7 +444,6 @@
   },
   {
    "dept": "Water Supply",
-   "dept_mr": "पाणीपुरवठा विभाग",
    "cases": 2,
    "c1": 2,
    "c2": 1,
@@ -417,7 +456,6 @@
   },
   {
    "dept": "Public Works",
-   "dept_mr": "सार्वजनिक बांधकाम विभाग",
    "cases": 9,
    "c1": 3,
    "c2": 4,
@@ -430,7 +468,6 @@
   },
   {
    "dept": "Sales Tax / GST",
-   "dept_mr": "विक्रीकर विभाग",
    "cases": 10,
    "c1": 3,
    "c2": 7,
@@ -443,7 +480,6 @@
   },
   {
    "dept": "Law & Judiciary",
-   "dept_mr": "विधी व न्याय विभाग",
    "cases": 2,
    "c1": 1,
    "c2": 0,
@@ -456,7 +492,6 @@
   },
   {
    "dept": "Industries, Energy & Labour",
-   "dept_mr": "उद्योग, ऊर्जा व कामगार विभाग",
    "cases": 4,
    "c1": 0,
    "c2": 0,
@@ -469,7 +504,6 @@
   },
   {
    "dept": "Social Welfare",
-   "dept_mr": "समाज कल्याण विभाग",
    "cases": 10,
    "c1": 1,
    "c2": 1,
@@ -478,11 +512,10 @@
    "other": 6,
    "private": 1,
    "accused": 15,
-   "amount": 359500
+   "amount": 355500
   },
   {
    "dept": "Town Planning",
-   "dept_mr": "नगर रचना विभाग",
    "cases": 3,
    "c1": 2,
    "c2": 3,
@@ -495,7 +528,6 @@
   },
   {
    "dept": "Finance",
-   "dept_mr": "वित्त विभाग",
    "cases": 3,
    "c1": 0,
    "c2": 2,
@@ -508,7 +540,6 @@
   },
   {
    "dept": "Cooperation & Marketing",
-   "dept_mr": "सहकार व पणन विभाग",
    "cases": 12,
    "c1": 1,
    "c2": 2,
@@ -521,7 +552,6 @@
   },
   {
    "dept": "Education",
-   "dept_mr": "शिक्षण विभाग",
    "cases": 29,
    "c1": 2,
    "c2": 8,
@@ -534,7 +564,6 @@
   },
   {
    "dept": "Sports",
-   "dept_mr": "क्रीडा विभाग",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -547,7 +576,6 @@
   },
   {
    "dept": "Food & Drugs",
-   "dept_mr": "अन्न व औषधी द्रव्ये विभाग",
    "cases": 2,
    "c1": 1,
    "c2": 1,
@@ -560,7 +588,6 @@
   },
   {
    "dept": "Agriculture",
-   "dept_mr": "कृषी विभाग",
    "cases": 15,
    "c1": 1,
    "c2": 4,
@@ -569,11 +596,10 @@
    "other": 1,
    "private": 3,
    "accused": 20,
-   "amount": 375900
+   "amount": 375500
   },
   {
    "dept": "State Transport (ST)",
-   "dept_mr": "राज्य परिवहन विभाग",
    "cases": 3,
    "c1": 0,
    "c2": 0,
@@ -586,7 +612,6 @@
   },
   {
    "dept": "Other departments",
-   "dept_mr": "इतर विभाग",
    "cases": 3,
    "c1": 0,
    "c2": 1,
@@ -599,7 +624,6 @@
   },
   {
    "dept": "CIDCO",
-   "dept_mr": "सिडको विभाग",
    "cases": 1,
    "c1": 0,
    "c2": 0,
@@ -612,7 +636,6 @@
   },
   {
    "dept": "Women & Child Development",
-   "dept_mr": "महिला व बाल विकास विभाग",
    "cases": 4,
    "c1": 0,
    "c2": 0,
@@ -625,7 +648,6 @@
   },
   {
    "dept": "Mahatma Phule Backward Class Corp.",
-   "dept_mr": "महात्मा फुले मागासवर्गीय",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -638,7 +660,6 @@
   },
   {
    "dept": "MHADA",
-   "dept_mr": "म्हाडा विभाग",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -651,7 +672,6 @@
   },
   {
    "dept": "MIDC",
-   "dept_mr": "महाराष्ट्र औद्योगिक वि.मंडल",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -664,7 +684,6 @@
   },
   {
    "dept": "Pollution Control Board",
-   "dept_mr": "प्रदुषण नियंत्रण मंडळ",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -677,7 +696,6 @@
   },
   {
    "dept": "BEST",
-   "dept_mr": "बेस्ट",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -690,7 +708,6 @@
   },
   {
    "dept": "Weights & Measures",
-   "dept_mr": "वजन व मापे विभाग",
    "cases": 1,
    "c1": 0,
    "c2": 1,
@@ -703,7 +720,6 @@
   },
   {
    "dept": "Higher & Technical Education",
-   "dept_mr": "उच्च व तंत्र शिक्षण विभाग",
    "cases": 1,
    "c1": 1,
    "c2": 0,
@@ -716,7 +732,6 @@
   },
   {
    "dept": "Skill Development",
-   "dept_mr": "कौशल्य विकास विभाग",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -729,7 +744,6 @@
   },
   {
    "dept": "Social Justice & Special Assistance",
-   "dept_mr": "सामाजिक न्याय व विशेष सहाय्य",
    "cases": 1,
    "c1": 0,
    "c2": 1,
@@ -742,7 +756,6 @@
   },
   {
    "dept": "Ports",
-   "dept_mr": "बंदर विभाग",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -755,7 +768,6 @@
   },
   {
    "dept": "Prisons",
-   "dept_mr": "कारागृह विभाग",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -768,7 +780,6 @@
   },
   {
    "dept": "Nagpur Improvement Trust",
-   "dept_mr": "नागपूर सुधार प्रन्यास विभाग",
    "cases": 0,
    "c1": 0,
    "c2": 0,
@@ -781,7 +792,6 @@
   },
   {
    "dept": "Charity Commissioner",
-   "dept_mr": "धर्मादाय आयुक्त",
    "cases": 1,
    "c1": 0,
    "c2": 1,
@@ -794,7 +804,6 @@
   },
   {
    "dept": "Silk Industries",
-   "dept_mr": "रेशीम उद्योग विभाग",
    "cases": 1,
    "c1": 0,
    "c2": 0,
@@ -820,7 +829,6 @@
  "da_by_dept": [
   {
    "dept": "Revenue / Land Records / Registration",
-   "dept_mr": "महसूल/भूमी अभिलेख/नोंदणी",
    "cases": 3,
    "c1": 1,
    "c2": 0,
@@ -832,8 +840,31 @@
    "amount": 16136070
   },
   {
+   "dept": "Police",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "MSEDCL (power distribution)",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
    "dept": "Municipal Corporation",
-   "dept_mr": "महानगर पालिका",
    "cases": 2,
    "c1": 1,
    "c2": 0,
@@ -845,8 +876,31 @@
    "amount": 14142497
   },
   {
-   "dept": "Town Planning / Urban Development",
-   "dept_mr": "नगर विकास/नगर रचना विभाग",
+   "dept": "Nagar Palika",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Nagar Parishad",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Town Planning",
    "cases": 1,
    "c1": 0,
    "c2": 1,
@@ -855,11 +909,10 @@
    "other": 0,
    "private": 1,
    "accused": 2,
-   "amount": 27841942
+   "amount": 27841542
   },
   {
    "dept": "Zilla Parishad",
-   "dept_mr": "जिल्हा परिषद",
    "cases": 1,
    "c1": 0,
    "c2": 0,
@@ -871,8 +924,127 @@
    "amount": 8289614
   },
   {
+   "dept": "Panchayat Samiti",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Forest",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Animal Husbandry, Dairy & Fisheries",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Food & Civil Supplies",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Water Resources",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Public Health",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "State Excise",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Tribal Development",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Regional Transport (RTO)",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Water Supply",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
    "dept": "Public Works",
-   "dept_mr": "सार्वजनिक बांधकाम विभाग",
    "cases": 1,
    "c1": 0,
    "c2": 0,
@@ -884,8 +1056,115 @@
    "amount": 9574851
   },
   {
+   "dept": "Sales Tax / GST",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Law & Judiciary",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Industries, Energy & Labour",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Social Welfare",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Finance",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Cooperation & Marketing",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Education",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Sports",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Food & Drugs",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
    "dept": "Agriculture",
-   "dept_mr": "कृषी विभाग",
    "cases": 1,
    "c1": 1,
    "c2": 0,
@@ -897,8 +1176,31 @@
    "amount": 43784930
   },
   {
+   "dept": "State Transport (ST)",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Other departments",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
    "dept": "CIDCO",
-   "dept_mr": "सिडको विभाग",
    "cases": 1,
    "c1": 1,
    "c2": 0,
@@ -908,6 +1210,102 @@
    "private": 1,
    "accused": 2,
    "amount": 19447905
+  },
+  {
+   "dept": "Women & Child Development",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Mahatma Phule Backward Class Corp.",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "MHADA",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Higher & Technical Education",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Skill Development",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Social Justice & Special Assistance",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Prisons",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
+  },
+  {
+   "dept": "Ports",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0,
+   "amount": 0
   }
  ],
  "da_totals": {
@@ -923,8 +1321,128 @@
  },
  "other_by_dept": [
   {
+   "dept": "Revenue / Land Records / Registration",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Police",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "MSEDCL (power distribution)",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Municipal Corporation",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Nagar Palika",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Nagar Parishad",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Zilla Parishad",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Panchayat Samiti",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Forest",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Animal Husbandry, Dairy & Fisheries",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Food & Civil Supplies",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
    "dept": "Water Resources",
-   "dept_mr": "जलसंपदा विभाग",
    "cases": 10,
    "c1": 39,
    "c2": 0,
@@ -932,12 +1450,175 @@
    "c4": 0,
    "other": 0,
    "private": 14,
-   "accused": 53,
-   "amount": null
+   "accused": 53
+  },
+  {
+   "dept": "Public Health",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "State Excise",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Tribal Development",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Regional Transport (RTO)",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Water Supply",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Public Works",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Sales Tax / GST",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Law & Judiciary",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Industries, Energy & Labour",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Social Welfare",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Finance",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Cooperation & Marketing",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Education",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Sports",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Food & Drugs",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
   },
   {
    "dept": "Agriculture",
-   "dept_mr": "कृषी विभाग",
    "cases": 1,
    "c1": 1,
    "c2": 0,
@@ -945,12 +1626,65 @@
    "c4": 0,
    "other": 0,
    "private": 0,
-   "accused": 1,
-   "amount": null
+   "accused": 1
+  },
+  {
+   "dept": "State Transport (ST)",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Other departments",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "CIDCO",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Women & Child Development",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Mahatma Phule Backward Class Corp.",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
   },
   {
    "dept": "MHADA",
-   "dept_mr": "म्हाडा विभाग",
    "cases": 1,
    "c1": 9,
    "c2": 0,
@@ -958,8 +1692,106 @@
    "c4": 0,
    "other": 0,
    "private": 0,
-   "accused": 9,
-   "amount": null
+   "accused": 9
+  },
+  {
+   "dept": "MIDC",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Pollution Control Board",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Slum Rehabilitation",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "BEST",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Weights & Measures",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Higher & Technical Education",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Skill Development",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Social Justice & Special Assistance",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
+  },
+  {
+   "dept": "Ports",
+   "cases": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "c4": 0,
+   "other": 0,
+   "private": 0,
+   "accused": 0
   }
  ],
  "other_totals": {
@@ -970,12 +1802,16 @@
   "c4": 0,
   "other": 0,
   "private": 14,
-  "accused": 63,
-  "amount": null
+  "accused": 63
  },
  "notes": [
-  "trap: department rows sum to (609, 59, 106, 436, 36, 88, 146, 871, 33224272) but the PDF's printed total row is (609, 59, 106, 436, 36, 88, 146, 871, 33198072) (cases, c1, c2, c3, c4, other, private, accused, amount; difference in amount +26,200). Both are kept; headline figures use the PDF's printed totals.",
-  "disproportionate-assets: department rows sum to (10, 4, 1, 5, 0, 0, 7, 17, 139217809) but the PDF's printed total row is (11, 5, 1, 5, 0, 0, 8, 19, 272299105) (cases, c1, c2, c3, c4, other, private, accused, amount; difference in amount -133,081,296). Both are kept; headline figures use the PDF's printed totals.",
-  "Other-corruption accused is 68 in the region table but 63 in the department table; both are as printed in the PDF."
+  "2026 disproportionate-assets table: department rows add up to 10 cases / 17 accused but the PDF's own total row says 11 / 19; both kept as printed.",
+  "2021 convictions: the department rows add up to 17 cases but the PDF prints 18; yearly conviction counts use the printed total and the department split is not shown for that year.",
+  "2018 convictions: the department rows add up to 55 cases but the PDF prints 56; yearly conviction counts use the printed total and the department split is not shown for that year.",
+  "2016 convictions: the department rows add up to 63 cases but the PDF prints 91; yearly conviction counts use the printed total and the department split is not shown for that year.",
+  "2015 convictions: the department rows add up to 119 cases but the PDF prints 120; yearly conviction counts use the printed total and the department split is not shown for that year.",
+  "2011 trap: ACB's yearly files disagree (437 vs 479); the value consistent with the printed total (479) is used.",
+  "2011 da: ACB's yearly files disagree (10 vs 15); the value consistent with the printed total (15) is used.",
+  "2011 other: ACB's yearly files disagree (16 vs 18); the value consistent with the printed total (18) is used."
  ]
 }
